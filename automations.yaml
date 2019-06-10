@@ -1,0 +1,60 @@
+- id: '1560093100306'
+  alias: Turn lights on at sunset
+  trigger:
+  - event: sunrise
+    offset: '-1:00'
+    platform: sun
+  condition:
+  - condition: state
+    entity_id: group.awesome_people
+    state: home
+  action:
+  - data:
+      entity_id: light.globo
+    service: light.turn_on
+  - data:
+      entity_id: switch.cyrus
+    service: switch.turn_on
+- id: '1560096054974'
+  alias: Turn all off at late night
+  trigger:
+  - at: 02:20:00
+    platform: time
+  condition: []
+  action:
+  - data:
+      entity_id: all
+    service: light.turn_off
+  - data:
+      entity_id: switch.cyrus
+    service: switch.turn_off
+- id: '1560099660499'
+  alias: Turn off hi-fi when storm
+  trigger:
+  - below: '4'
+    entity_id: sensor.dark_sky_nearest_storm_distance
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      entity_id: switch.cyrus
+    service: switch.turn_off
+- id: '1560100092082'
+  alias: turn off everything when away
+  trigger:
+  - entity_id: device_tracker.huawei_mate_10_pro_cefa58
+    from: home
+    platform: state
+    to: not_home
+  - entity_id: device_tracker.brandsiphone
+    from: home
+    platform: state
+    to: not_home
+  condition: []
+  action:
+  - data:
+      entity_id: all
+    service: light.turn_off
+  - data:
+      entity_id: switch.cyrus
+    service: switch.turn_off
